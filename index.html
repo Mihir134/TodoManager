@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>To do list</title>
+    <style>
+        ul li {
+            cursor: pointer;
+            background-color: bisque;
+            margin: 10px;
+            width: fit-content;
+            text-align: center;
+            padding: 5px;
+            font-size: 25px;
+            font-weight: bold;
+            border-radius: 30px;
+        }
+    </style>
+</head>
+
+<body class="bg-blue-200">
+    <form action="">
+    <div class="flex flex-cetnner justify-center gap-4 mt-5">
+        <input class="border bg-white-500 font-bold border-black rounded-lg px-3" type="text" id="todoInput">
+        <button class="border ring-1 border px-3 py-1 hover:bg-black hover:text-white rounded-lg font-bold" id="AddTodo"
+            onclick="addTodo()">Add Todo</button>
+    </div>
+</form>
+
+
+
+    <ul id="listOfTodos" class="flex flex-col justify-center items-center
+ border mt-3 bg-red rounded-lg bg-red-200">
+        <!-- <li></li> -->
+    </ul>
+
+    <script>
+        let todoInput = document.getElementById('todoInput')
+        let AddTodo = document.getElementById('AddTodo')
+        let list = document.getElementById('listOfTodos')
+
+        let Tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+
+        function randerTask() {
+            list.innerHTML = "";
+            Tasks.forEach((task, index) => {
+                const li = document.createElement("li")
+                li.textContent = task
+                li.onclick = () => removeTask(index)
+                list.appendChild(li);
+            });
+        }
+
+
+        function addTodo() {
+            const singleTask = todoInput.value.trim()
+            if (singleTask) {
+                Tasks.push(singleTask);
+                localStorage.setItem("Tasks", JSON.stringify(Tasks))
+                todoInput.value = ""
+                randerTask();
+            }
+        }
+
+        function removeTask(index) {
+            Tasks.splice(index, 1)
+            localStorage.setItem("Tasks", JSON.stringify(Tasks))
+            randerTask();
+        }
+
+        randerTask();
+
+    </script>
+</body>
+
+</html>
